@@ -264,8 +264,225 @@
         @media (prefers-reduced-motion: reduce) {
             .bg-blob { animation: none !important; }
         }
+          /* ===== 隐私政策弹窗样式 ===== */
+        .privacy-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .privacy-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .privacy-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 600px;
+            max-height: 75vh;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .privacy-modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .privacy-modal-header {
+            padding: 24px 28px 12px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+
+        .privacy-modal-header h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #1a1a2e;
+        }
+
+        .privacy-modal-header .update-date {
+            font-size: 13px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .privacy-modal-body {
+            padding: 20px 28px;
+            overflow-y: auto;
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .privacy-modal-body h3 {
+            font-size: 16px;
+            color: #1a1a2e;
+            margin: 18px 0 8px;
+        }
+
+        .privacy-modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .privacy-modal-body p {
+            margin: 6px 0;
+        }
+
+        .privacy-modal-body a {
+            color: #4a90d9;
+            text-decoration: none;
+        }
+
+        .privacy-modal-body a:hover {
+            text-decoration: underline;
+        }
+
+        .privacy-modal-footer {
+            padding: 16px 28px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .privacy-modal-footer button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 48px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .privacy-modal-footer button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .privacy-modal-footer button:active {
+            transform: translateY(0);
+        }
+
+        /* "隐私政策已更新"按钮样式 */
+        .privacy-update-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 20px;
+            font-size: 13px;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .privacy-update-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        /* 弹窗打开时页面禁止滚动 */
+        body.privacy-modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
+<!-- ===== 隐私政策弹窗 ===== -->
+<div class="privacy-overlay" id="privacyOverlay"></div>
+<div class="privacy-modal" id="privacyModal">
+  <div class="privacy-modal-header">
+    <h2>隐私政策 (Privacy Policy)</h2>
+    <div class="update-date">更新日期：2026年5月24日</div>
+  </div>
+  <div class="privacy-modal-body">
+    <p>你好，我是 Veyra。感谢你访问我的个人空间。我非常重视你的隐私，以下是关于本站数据处理的简单说明：</p>
+
+    <h3>1. 信息收集</h3>
+    <p>本站不会主动收集你的个人身份信息（如姓名、电话等）。如果你通过 QQ 或钉钉联系我，相关沟通记录仅用于交流技术或建站问题，我不会将其用于其他商业用途或分享给第三方。</p>
+
+    <h3>2. Cookie 使用</h3>
+    <p>本站可能使用必要的 Cookie 以提升浏览体验（如记住主题偏好），不包含追踪广告代码。</p>
+
+    <h3>3. 内容版权</h3>
+    <p>本站发布的软件教程、摄影作品及文字内容，版权归 <a href="#">关于Veyra</a> 所有。未经书面授权，禁止转载、商用或用于 AI 训练。转载请务必注明出处。</p>
+
+    <h3>4. 外部链接</h3>
+    <p>本站可能包含指向外部网站的链接，这些网站有独立的隐私政策，我不对其内容或隐私实践负责。</p>
+
+    <h3>5. 联系与删除</h3>
+    <p>如果你认为本站无意中侵犯了你的权益，或有其他隐私顾虑，请通过 <a href="#">联系方式</a> 与我沟通，我会尽快处理。</p>
+  </div>
+  <div class="privacy-modal-footer">
+    <button id="privacyConfirmBtn">我知道了</button>
+  </div>
+</div>
+<script>
+  // 隐私政策弹窗控制
+  const overlay = document.getElementById('privacyOverlay');
+  const modal = document.getElementById('privacyModal');
+  const confirmBtn = document.getElementById('privacyConfirmBtn');
+
+  function openPrivacyModal() {
+    overlay.classList.add('active');
+    modal.classList.add('active');
+    document.body.classList.add('privacy-modal-open');
+  }
+
+  function closePrivacyModal() {
+    overlay.classList.remove('active');
+    modal.classList.remove('active');
+    document.body.classList.remove('privacy-modal-open');
+    // 记录用户已看过隐私政策（本次会话不再自动弹出）
+    sessionStorage.setItem('privacySeen', 'true');
+  }
+
+  // 点击"我知道了"关闭弹窗
+  confirmBtn.addEventListener('click', closePrivacyModal);
+
+  // 点击遮罩层也可关闭
+  overlay.addEventListener('click', closePrivacyModal);
+
+  // ESC 键关闭
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closePrivacyModal();
+    }
+  });
+
+  // 页面加载时自动弹出（仅首次访问时弹出）
+  window.addEventListener('DOMContentLoaded', function() {
+    if (!sessionStorage.getItem('privacySeen')) {
+      // 延迟 500ms 弹出，等页面渲染完成
+      setTimeout(openPrivacyModal, 500);
+    }
+  });
+</script>
 <body>
     <!-- 背景装饰色块 -->
     <div class="bg-blob blob-1"></div>
@@ -302,6 +519,7 @@
                     <ul class="link-list">
                         <li><a href="#">📖 教程专区</a></li>
                         <li><a href="#">📷 摄影专区</a></li>
+                        <li><a href="#">📚 知识区（试运营）</a></li>
                         <li><a href="#">🕰️ 早期页面</a></li>
                     </ul>
                 </div>
@@ -323,8 +541,9 @@
         <div class="card">
             <div class="section-title">ℹ️ 关于 Veyra's Space</div>
             <p style="margin-top: 0.5rem; line-height: 1.7; color: var(--text-primary); text-align: center; font-size: 1.05rem;">
-                这里是 Veyra 的个人空间，分享技术学习、摄影作品和日常思考。
+                Veyra's Space是Veyra在2024年1月20日建立的私人网站（原名「Freedom's Space」），至今已运营2年有余，主要用于分享站主的日常生活以及一些软件的使用教程等科技类文章（因为站主计算机这一块那必须不用多说），部分内容由AI生成。
             </p>
+            <button class="privacy-update-btn" onclick="openPrivacyModal()">🔒 隐私政策已更新</button>
         </div>
         
         <footer>
